@@ -1,0 +1,6 @@
+# Ignore these files 
+*.txt
+*.png
+*.pdf
+*.hdf5
+
