@@ -219,8 +219,17 @@ class vnaClient():
         size_element = 18 # 18 is the number of digits of a single element
         LEN = size_element*(2*self.points) # 2 due to the data type: complex(R+jI)
         DATA = self.recv(LEN)
+        DATA2 = self.recv(LEN)
+        #DATA3 = self.recv(LEN)
         print("Len of data is: " + str(self.points))
+        print("Len of Data1 is: ", len(DATA))
+        print("Data1 is: ")
         print(DATA)
+        print("Len of Data2 is: ", len(DATA2))
+        print("Data2 is: ")
+        print(DATA2)
+        #print("Data3 is: ")
+        #print(DATA3)
         # Converts byte data to string data
         DATA = DATA.decode("utf-8")
         # Converts string data to array complex 64 data

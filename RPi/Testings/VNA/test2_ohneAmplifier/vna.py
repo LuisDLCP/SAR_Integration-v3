@@ -210,7 +210,7 @@ class vnaClient():
         while True:
             self.send(data = SCPI_OPC)
             x = self.recv()
-            print(x)
+            # print(x)
             if x == b"1\n":
                 break
         x = None
@@ -218,19 +218,39 @@ class vnaClient():
         self.send(data = SCPI_READ_DATA %1)
         size_element = 18 # 18 is the number of digits of a single element
         LEN = size_element*(2*self.points) # 2 due to the data type: complex(R+jI)
-        DATA = self.recv(LEN)
-        print("Len of data is: " + str(self.points))
-        print(DATA)
+        DATA_AUX = self.recv(LEN)
+        # print("Data last characters are: ", DATA[-1])
+        DATA = ""
+        while DATA_AUX[-1]!=10: # \n character
+            # print('Yes!')
+            DATA += DATA_AUX.decode("utf-8")
+            DATA_AUX = self.recv(LEN)
+        DATA += DATA_AUX.decode("utf-8")
+
+        # else:
+        #     DATA_FIN = DATA
+        #     print('No!')
+        #DATA2 = self.recv(LEN)
+        #DATA3 = self.recv(LEN)
+        # print("Len of data is: " + str(self.points))
+        # print("Len of Data1 is: ", len(DATA))
+        # print("Data1 is: ")
+        # print(DATA)
+        # print("Len of Data2 is: ", len(DATA_AUX))
+        # print("Data2 is: ")
+        # print(DATA_AUX)
+        # # print("Data3 is: ")
+        # print(DATA3)
         # Converts byte data to string data
-        DATA = DATA.decode("utf-8")
+        # DATA = DATA.decode("utf-8")
         # Converts string data to array complex 64 data
         data_array = np.fromstring(DATA, dtype = float, sep=',')
         data_array = list(data_array)
         complex_data_array = np.array(data_array[::2])+1j*np.array(data_array[1::2])
         complex_data_array.astype(np.complex64)
         #
-        print("Array data is: ")
-        print(complex_data_array)
+        # print("Array data is: ")
+        # print(complex_data_array)
         print("sweep sent and data received")
         #
         return complex_data_array
